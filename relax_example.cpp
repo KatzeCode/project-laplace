@@ -5,14 +5,14 @@
 typedef std::vector<double> data_t;
 
 // Global variables
-const double delta = 0.1;
+const double delta = 0.03;
 const double xmin = 0.0;
 const double xmax = 1.0;
 const double ymin = 0.0;
 const double ymax = 1.2;
 const int nx = (xmax - xmin) / delta;
 const int ny = (ymax - ymin) / delta;
-const int nsteps = 1;
+const int nsteps = 200;
 
 void initial_conditions(data_t &data, int nx, int ny) {
   for (int ix = 0; ix < nx; ++ix) {
@@ -70,7 +70,13 @@ void print_screen(const data_t &data, int nx, int ny) {
   std::cout << "\n";
 }
 
+void start_gnuplot(void) {
+  std::cout << "set pm3d\n";
+  std::cout << "set contour base\n";
+}
+
 void print_gnuplot(const data_t &data, int nx, int ny) {
+  std::cout << "splot '-'\n";
   for (int ix = 0; ix < nx; ++ix) {
     double x = xmin + ix * delta;
     for (int iy = 0; iy < ny; ++iy) {
@@ -79,9 +85,11 @@ void print_gnuplot(const data_t &data, int nx, int ny) {
     }
     std::cout << "\n";
   }
+  std::cout << "e\n";
 }
 
 void evolve(data_t &data, int nx, int ny, int nsteps) {
+  start_gnuplot();
   for (int istep = 0; istep < nsteps; ++istep) {
     relaxation_step(data, nx, ny);
     print_gnuplot(data, nx, ny);
