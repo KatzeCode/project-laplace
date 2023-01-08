@@ -22,7 +22,6 @@ void print_screen(const data_t &data, int nx, int ny);
 void start_gnuplot(void);
 void print_gnuplot(const data_t &data, int nx, int ny);
 int evolve(data_t &data, int nx, int ny, int maxnsteps, double eps);
-//
 
 // Main
 int main() {
@@ -38,7 +37,6 @@ int main() {
 
   return 0;
 }
-//
 
 // Function initializations
 void initial_conditions(data_t &data, int nx, int ny) {
@@ -74,7 +72,7 @@ void boundary_conditions(data_t &data, int nx, int ny) {
   // New boundary
   ix = nx / 2;
   for (int iy = ny / 3; iy < 2 * (ny / 3); ++iy) {
-    data[ix * ny + iy] = -50.0;
+    data[ix * ny + iy] = 100.0;
   }
 }
 
@@ -113,6 +111,7 @@ void start_gnuplot(void) {
   std::cout << "set output 'anim.gif'\n";
   std::cout << "set pm3d\n";
   std::cout << "set contour base\n";
+  std::cout << "set hidden3d\n";
 }
 
 void print_gnuplot(const data_t &data, int nx, int ny) {
@@ -140,4 +139,3 @@ int evolve(data_t &data, int nx, int ny, int maxnsteps, double eps) {
   }
   return istep;
 }
-//
