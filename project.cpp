@@ -6,14 +6,15 @@
 typedef std::vector<double> data_t;
 
 // Global variables
-const double delta = 0.03;
+const double delta = 0.01;
 const double xmin = 0.0;
 const double xmax = 1.0;
 const double ymin = 0.0;
 const double ymax = 1.0;
 const int nx = (xmax - xmin) / delta;
 const int ny = (ymax - ymin) / delta;
-const int maxnsteps = 1000;
+const int r = nx / 3;
+const int maxnsteps = 2000;
 
 // Function declarations
 void initial_conditions(data_t &data, int nx, int ny);
@@ -21,8 +22,8 @@ void boundary_conditions(data_t &data, int nx, int ny);
 double relaxation_step(data_t &data, int nx, int ny);
 void print_file(const data_t &data, int nx, int ny);
 int evolve(data_t &data, int nx, int ny, int maxnsteps, double eps);
-// void start_gnuplot(void);
-// void print_gnuplot(const data_t &data, int nx, int ny);
+void start_gnuplot(void);
+void print_gnuplot(const data_t &data, int nx, int ny);
 
 // Main
 int main() {
@@ -52,64 +53,80 @@ void initial_conditions(data_t &data, int nx, int ny) {
 
 void boundary_conditions(data_t &data, int nx, int ny) {
   int ix, iy;
+  for (int ix = 0; ix < nx; ++ix) {
+    for (int iy = 0; iy < ny; ++iy) {
+      int x = iy - ny / 2;
+      int y = nx / 2 - ix;
+      int sumsq = x * x + y * y;
+      if ((pow(r - 2, 2) < sumsq) && (sumsq < pow(r + 2, 2))) {
+        data[ix * ny + iy] = 100.0;
+      }
+    }
+  }
   // BORDER BOUNDARY CONDITIONS
   //  First Row
-  ix = 0;
-  for (int iy = 0; iy < ny; ++iy) {
-    data[ix * ny + iy] = 100.0;
-  }
-  // Last Row
-  ix = nx - 1;
-  for (int iy = 0; iy < ny; ++iy) {
-    data[ix * ny + iy] = 0.0;
-  }
-  // First Column
-  iy = 0;
-  for (int ix = 1; ix < nx; ++ix) {
-    data[ix * ny + iy] = 0.0;
-  }
-  // Last Column
-  iy = ny - 1;
-  for (int ix = 1; ix < nx; ++ix) {
-    data[ix * ny + iy] = 0.0;
-  }
-  // INNER BOUNDARY CONDITIONS
-  //  First Row
-  ix = nx / 5;
-  for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
-    data[ix * ny + iy] = 100.0;
-  }
-  // Last Row
-  ix = 4 * nx / 5;
-  for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
-    data[ix * ny + iy] = 100.0;
-  }
-  // First Column
-  iy = ny / 5;
-  for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
-    data[ix * ny + iy] = 100.0;
-  }
-  // Last Column
-  iy = 4 * ny / 5;
-  for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
-    data[ix * ny + iy] = 100.0;
-  }
+  // ix = 0;
+  // for (int iy = 0; iy < ny; ++iy) {
+  //   data[ix * ny + iy] = 100.0;
+  // }
+  // // Last Row
+  // ix = nx - 1;
+  // for (int iy = 0; iy < ny; ++iy) {
+  //   data[ix * ny + iy] = 0.0;
+  // }
+  // // First Column
+  // iy = 0;
+  // for (int ix = 1; ix < nx; ++ix) {
+  //   data[ix * ny + iy] = 0.0;
+  // }
+  // // Last Column
+  // iy = ny - 1;
+  // for (int ix = 1; ix < nx; ++ix) {
+  //   data[ix * ny + iy] = 0.0;
+  // }
+  // // INNER BOUNDARY CONDITIONS
+  // //  First Row
+  // ix = nx / 5;
+  // for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
+  //   data[ix * ny + iy] = 100.0;
+  // }
+  // // Last Row
+  // ix = 4 * nx / 5;
+  // for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
+  //   data[ix * ny + iy] = 100.0;
+  // }
+  // // First Column
+  // iy = ny / 5;
+  // for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
+  //   data[ix * ny + iy] = 100.0;
+  // }
+  // // Last Column
+  // iy = 4 * ny / 5;
+  // for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
+  //   data[ix * ny + iy] = 100.0;
+  // }
 }
 
 double relaxation_step(data_t &data, int nx, int ny) {
   double maxDELTA = -1;
   for (int ix = 1; ix < nx - 1; ++ix) {
     for (int iy = 1; iy < ny - 1; ++iy) {
-      if ((nx / 5 <= ix) && (ix <= 4 * nx / 5) && (iy == ny / 5)) {
-        continue;
-      }
-      if ((nx / 5 <= ix) && (ix <= 4 * nx / 5) && (iy == 4 * ny / 5)) {
-        continue;
-      }
-      if ((ny / 5 <= iy) && (iy <= 4 * ny / 5) && (ix == nx / 5)) {
-        continue;
-      }
-      if ((ny / 5 <= iy) && (iy <= 4 * ny / 5) && (ix == 4 * nx / 5)) {
+      // if ((nx / 5 <= ix) && (ix <= 4 * nx / 5) && (iy == ny / 5)) {
+      //   continue;
+      // }
+      // if ((nx / 5 <= ix) && (ix <= 4 * nx / 5) && (iy == 4 * ny / 5)) {
+      //   continue;
+      // }
+      // if ((ny / 5 <= iy) && (iy <= 4 * ny / 5) && (ix == nx / 5)) {
+      //   continue;
+      // }
+      // if ((ny / 5 <= iy) && (iy <= 4 * ny / 5) && (ix == 4 * nx / 5)) {
+      //   continue;
+      // }
+      int x = iy - ny / 2;
+      int y = nx / 2 - ix;
+      int sumsq = x * x + y * y;
+      if ((pow(r - 2, 2) < sumsq) && (sumsq < pow(r + 2, 2))) {
         continue;
       }
       double newval = (data[(ix + 1) * ny + iy] + data[(ix - 1) * ny + iy] +

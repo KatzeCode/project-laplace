@@ -2,10 +2,14 @@
 #include <iostream>
 #include <vector>
 
-const int nx = 9.0;
-const int ny = 9.0;
-const int a = nx / 2 * ny;
-const int b = ny / 2;
+const double xmin = 0;
+const double xmax = 24;
+const double ymin = 0;
+const double ymax = 24;
+const double delta = 1.0;
+const int nx = (xmax - xmin) / delta;
+const int ny = (ymax - ymin) / delta;
+const int r = nx / 3;
 
 void initial_values(std::vector<double> &vectormatrix, int nx, int ny) {
   for (int ix = 0; ix < nx; ++ix) {
@@ -16,8 +20,16 @@ void initial_values(std::vector<double> &vectormatrix, int nx, int ny) {
 }
 
 void boundaries(std::vector<double> &vectormatrix, int nx, int ny) {
-  int ix, iy;
-  vectormatrix[a + b] = 5.0;
+  for (int ix = 0; ix < nx; ++ix) {
+    for (int iy = 0; iy < ny; ++iy) {
+      int x = iy - ny / 2;
+      int y = nx / 2 - ix;
+      int sumsq = x * x + y * y;
+      if ((pow(r - 2, 2) < sumsq) && (sumsq < pow(r + 2, 2))) {
+        vectormatrix[ix * ny + iy] = 5.0;
+      }
+    }
+  }
 }
 
 void print_values(const std::vector<double> &vectormatrix, int nx, int ny) {
