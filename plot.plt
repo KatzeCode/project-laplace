@@ -1,8 +1,8 @@
 set terminal pngcairo size 1280,720
-set output "plot.png"
+set output "plot3.png"
 
 set contour base
 set hidden3d
 set pm3d
 
-splot "datafile.txt" w l lt 3
+splot "boundary3.txt" w l lt 3

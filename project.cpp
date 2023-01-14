@@ -62,49 +62,49 @@ void boundary_conditions(data_t &data, int nx, int ny) {
         data[ix * ny + iy] = 100.0;
       }
     }
+    // BORDER BOUNDARY CONDITIONS
+    // // First Row
+    // ix = 0;
+    // for (int iy = 0; iy < ny; ++iy) {
+    //   data[ix * ny + iy] = 100.0;
+    // }
+    // // Last Row
+    // ix = nx - 1;
+    // for (int iy = 0; iy < ny; ++iy) {
+    //   data[ix * ny + iy] = 0.0;
+    // }
+    // // First Column
+    // iy = 0;
+    // for (int ix = 1; ix < nx; ++ix) {
+    //   data[ix * ny + iy] = 0.0;
+    // }
+    // // Last Column
+    // iy = ny - 1;
+    // for (int ix = 1; ix < nx; ++ix) {
+    //   data[ix * ny + iy] = 0.0;
+    // }
+    // // // INNER BOUNDARY CONDITIONS
+    // //  First Row
+    // ix = nx / 5;
+    // for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
+    //   data[ix * ny + iy] = 100.0;
+    // }
+    // // Last Row
+    // ix = 4 * nx / 5;
+    // for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
+    //   data[ix * ny + iy] = 100.0;
+    // }
+    // // First Column
+    // iy = ny / 5;
+    // for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
+    //   data[ix * ny + iy] = 100.0;
+    // }
+    // // Last Column
+    // iy = 4 * ny / 5;
+    // for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
+    //   data[ix * ny + iy] = 100.0;
+    // }
   }
-  // BORDER BOUNDARY CONDITIONS
-  //  First Row
-  // ix = 0;
-  // for (int iy = 0; iy < ny; ++iy) {
-  //   data[ix * ny + iy] = 100.0;
-  // }
-  // // Last Row
-  // ix = nx - 1;
-  // for (int iy = 0; iy < ny; ++iy) {
-  //   data[ix * ny + iy] = 0.0;
-  // }
-  // // First Column
-  // iy = 0;
-  // for (int ix = 1; ix < nx; ++ix) {
-  //   data[ix * ny + iy] = 0.0;
-  // }
-  // // Last Column
-  // iy = ny - 1;
-  // for (int ix = 1; ix < nx; ++ix) {
-  //   data[ix * ny + iy] = 0.0;
-  // }
-  // // INNER BOUNDARY CONDITIONS
-  // //  First Row
-  // ix = nx / 5;
-  // for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
-  //   data[ix * ny + iy] = 100.0;
-  // }
-  // // Last Row
-  // ix = 4 * nx / 5;
-  // for (int iy = ny / 5; iy < 4 * ny / 5; ++iy) {
-  //   data[ix * ny + iy] = 100.0;
-  // }
-  // // First Column
-  // iy = ny / 5;
-  // for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
-  //   data[ix * ny + iy] = 100.0;
-  // }
-  // // Last Column
-  // iy = 4 * ny / 5;
-  // for (int ix = nx / 5; ix < 4 * nx / 5; ++ix) {
-  //   data[ix * ny + iy] = 100.0;
-  // }
 }
 
 double relaxation_step(data_t &data, int nx, int ny) {
@@ -144,7 +144,7 @@ double relaxation_step(data_t &data, int nx, int ny) {
 
 void print_file(const data_t &data, int nx, int ny) {
   std::ofstream file;
-  file.open("datafile.txt");
+  file.open("boundary3.txt");
   for (int ix = 0; ix < nx; ++ix) {
     double x = xmin + ix * delta;
     for (int iy = 0; iy < nx; ++iy) {
