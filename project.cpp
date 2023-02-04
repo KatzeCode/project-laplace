@@ -19,11 +19,11 @@ const int maxnsteps = 2000;
 // Function declarations
 void initial_conditions(data_t &data, int nx, int ny);
 void boundary_conditions(data_t &data, int nx, int ny);
-double relaxation_step(data_t &data, int nx, int ny);
 void print_file(const data_t &data, int nx, int ny);
-int evolve(data_t &data, int nx, int ny, int maxnsteps, double eps);
 void start_gnuplot(void);
 void print_gnuplot(const data_t &data, int nx, int ny);
+int evolve(data_t &data, int nx, int ny, int maxnsteps, double eps);
+double relaxation_step(data_t &data, int nx, int ny);
 
 // Main
 int main() {
